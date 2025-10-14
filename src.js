@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
       element.classList.add('snap-target');
     });
 
-    /* Step 3: Add navigation functionality to the buttons */
+    /* Step 3: Add basic click-only navigation functionality to the buttons */
 
     const viewport = slider.querySelector('.viewport');
     const scrollSpeed = parseInt(slider.getAttribute('data-scrollSpeed')) || 300;
@@ -49,6 +49,39 @@ document.addEventListener('DOMContentLoaded', () => {
         behavior: 'smooth'
       });
     });
+
+    /* Step 4: Add click-and-hold navigation functionality to the buttons */
+
+    const scrollInterval = parseInt(slider.getAttribute('data-scrollInterval')) || 400;
+    let scrollTimer = null;
+
+    function startScroll(direction) {
+      if (scrollTimer) return;
+
+      scrollTimer = setInterval(() => {
+        viewport.scrollBy({
+          left: direction * scrollSpeed,
+          behavior: 'smooth'
+        });
+      }, scrollInterval);
+    };
+
+    function stopScroll() {
+      clearInterval(scrollTimer);
+      scrollTimer = null;
+    };
+
+    next.addEventListener('mousedown', () => startScroll(1));
+    next.addEventListener('mouseup', stopScroll);
+    next.addEventListener('mouseleave', stopScroll);
+    next.addEventListener('touchstart', () => startScroll(1), { passive: true });
+    next.addEventListener('touchend', stopScroll);
+
+    prev.addEventListener('mousedown', () => startScroll(-1));
+    prev.addEventListener('mouseup', stopScroll);
+    prev.addEventListener('mouseleave', stopScroll);
+    prev.addEventListener('touchstart', () => startScroll(-1), { passive: true });
+    prev.addEventListener('touchend', stopScroll);
 
   });
 });
