@@ -33,30 +33,44 @@ ul {
     padding: 0;
 }
 
+.wrapper {
+    margin: 0 auto;
+    width: 900px;
+}
+
+@media (max-width: 1000px) {
+    .wrapper {
+        width: 100%;
+    }
+}
+
 .snappy-slider {
     display: flex;
     gap: var(--gap);
     margin: 0 auto;
-    width: 700px;
+    width: 100%;
 }
 
-.content {
+.viewport {
     -ms-overflow-style: none;
     overflow-y: hidden;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
+    width: 100%;
 }
 
-.content::-webkit-scrollbar {
+.viewport::-webkit-scrollbar {
     display: none;
 }
 
 .track {
     display: flex;
+    margin: 0 auto;
 }
 
-.item {
+
+li.content {
     flex: 0 0 var(--width);
     height: var(--height);
     width: var(--width);
@@ -66,19 +80,48 @@ ul {
     display: flex;
     font-size: 4em;
     justify-content: center;
-    user-select: none;
+    transition: .1s ease-in-out;
 }
+
+li.content:hover {
+    background: rgb(174, 82, 113);
+}
+
 
 .spacer {
     flex: 0 0 var(--gap);
-    pointer-events: none;
-    user-select: none;
 }
 
-.shift-one .item {
+.snap-target {
     scroll-snap-align: center;
 }
 
-.shift-two .spacer {
+/* Alternative styling for snapping by groups: */
+
+li.group {
+    display: flex;
+    flex: 0 0 100%;
     scroll-snap-align: center;
+}
+
+ul.content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+ul.content li {
+    width: var(--width);
+    height: var(--height);
+    align-items: center;
+    background: palevioletred;
+    color: white;
+    display: flex;
+    font-size: 4em;
+    justify-content: center;
+    transition: .1s ease-in-out;
+}
+
+ul.content li+li {
+    margin-left: var(--gap);
 }

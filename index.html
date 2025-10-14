@@ -7,46 +7,76 @@
 </head>
 
 <body>
-    <h1>Snappy Slider</h1>
-    <h2>Shift One</h2>
-    <div class="snappy-slider shift-one">
-        <button class="prev">🡠</button>
-        <div class="content">
-            <ul class="track">
-                <li class="item">1</li>
-                <li class="item">2</li>
-                <li class="item">3</li>
-                <li class="item">4</li>
-                <li class="item">5</li>
-                <li class="item">6</li>
-                <li class="item">7</li>
-                <li class="item">8</li>
-                <li class="item">9</li>
-                <li class="item">10</li>
-            </ul>
-        </div>
-        <button class="next">🡢</button>
-    </div>
-    <h2>Shift Two</h2>
-    <div class="snappy-slider shift-two">
-        <button class="prev">🡠</button>
-        <div class="content">
-            <ul class="track">
+    <div class="wrapper">
+        <h1>Snappy Slider</h1>
+        <h2>Snap to content</h2>
+        <section class="snappy-slider" data-snapTarget="content">
+            <button class="prev">🡠</button>
+            <div class="viewport">
                 <ul class="track">
-                    <li class="item">1</li>
-                    <li class="item">2</li>
-                    <li class="item">3</li>
-                    <li class="item">4</li>
-                    <li class="item">5</li>
-                    <li class="item">6</li>
-                    <li class="item">7</li>
-                    <li class="item">8</li>
-                    <li class="item">9</li>
-                    <li class="item">10</li>
+                    <li class="content">1</li>
+                    <li class="content">2</li>
+                    <li class="content">3</li>
+                    <li class="content">4</li>
+                    <li class="content">5</li>
+                    <li class="content">6</li>
+                    <li class="content">7</li>
+                    <li class="content">8</li>
+                    <li class="content">9</li>
+                    <li class="content">10</li>
                 </ul>
-            </ul>
-        </div>
-        <button class="next">🡢</button>
+            </div>
+            <button class="next">🡢</button>
+        </section>
+        <h2>Snap to spacer</h2>
+        <section class="snappy-slider" data-snapTarget="spacer">
+            <button class="prev">🡠</button>
+            <div class="viewport">
+                <ul class="track">
+                    <li class="content" style="background-color: rgb(65, 154, 117)">1</li>
+                    <li class="content" style="background-color: rgb(65, 154, 117)">2</li>
+                    <li class="content" style="background-color: rgb(65, 154, 117)">3</li>
+                    <li class="content" style="background-color: rgb(65, 154, 117)">4</li>
+                    <li class="content" style="background-color: rgb(65, 154, 117)">5</li>
+                    <li class="content" style="background-color: rgb(65, 154, 117)">6</li>
+                    <li class="content" style="background-color: rgb(65, 154, 117)">7</li>
+                    <li class="content" style="background-color: rgb(65, 154, 117)">8</li>
+                    <li class="content" style="background-color: rgb(65, 154, 117)">9</li>
+                    <li class="content" style="background-color: rgb(65, 154, 117)">10</li>
+                </ul>
+            </div>
+            <button class="next">🡢</button>
+        </section>
+        <h2>Snap to group</h2>
+        <section class="snappy-slider" data-snapTarget="group" data-scrollSpeed="900">
+            <button class="prev">🡠</button>
+            <div class="viewport">
+                <ul class="track">
+                    <li class="group">
+                        <ul class="content">
+                            <li style="background-color: rgb(90, 119, 164)">1</li>
+                            <li style="background-color: rgb(90, 119, 164)">2</li>
+                            <li style="background-color: rgb(90, 119, 164)">3</li>
+                        </ul>
+                    </li>
+                    <li class="group">
+                        <ul class="content">
+                            <li style="background-color: rgb(152, 110, 165)">1</li>
+                            <li style="background-color: rgb(152, 110, 165)">2</li>
+                            <li style="background-color: rgb(152, 110, 165)">3</li>
+                        </ul>
+                    </li>
+                    <li class="group">
+                        <ul class="content">
+                            <li style="background-color: rgb(182, 103, 77)">1</li>
+                            <li style="background-color: rgb(182, 103, 77)">2</li>
+                            <li style="background-color: rgb(182, 103, 77)">3</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <button class="next">🡢</button>
+        </section>
     </div>
     <script src="./src.js"></script>
 </body>
