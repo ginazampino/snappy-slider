@@ -33,6 +33,8 @@ ul {
     padding: 0;
 }
 
+/* Demo page width: */
+
 .wrapper {
     margin: 0 auto;
     width: 900px;
@@ -43,6 +45,8 @@ ul {
         width: 100%;
     }
 }
+
+/* Demo slider: */
 
 .snappy-slider {
     display: flex;
@@ -66,27 +70,7 @@ ul {
 
 .track {
     display: flex;
-    margin: 0 auto;
 }
-
-
-li.content {
-    flex: 0 0 var(--width);
-    height: var(--height);
-    width: var(--width);
-    align-items: center;
-    background: palevioletred;
-    color: white;
-    display: flex;
-    font-size: 4em;
-    justify-content: center;
-    transition: .1s ease-in-out;
-}
-
-li.content:hover {
-    background: rgb(174, 82, 113);
-}
-
 
 .spacer {
     flex: 0 0 var(--gap);
@@ -96,7 +80,23 @@ li.content:hover {
     scroll-snap-align: center;
 }
 
-/* Alternative styling for snapping by groups: */
+/* Option 1) The slider's contents are UNGROUPED <li> elements: */
+
+li.content {
+    flex: 0 0 var(--width);
+    height: var(--height);
+    width: var(--width);
+
+    /* Demo styling only: */
+    align-items: center;
+    background: palevioletred;
+    color: white;
+    display: flex;
+    font-size: 4em;
+    justify-content: center;
+}
+
+/* Option 2) The slider's contents are GROUPS of <li> elements: */
 
 li.group {
     display: flex;
@@ -113,13 +113,14 @@ ul.content {
 ul.content li {
     width: var(--width);
     height: var(--height);
+
+    /* Demo styling only: */
     align-items: center;
     background: palevioletred;
     color: white;
     display: flex;
     font-size: 4em;
     justify-content: center;
-    transition: .1s ease-in-out;
 }
 
 ul.content li+li {
