@@ -80,6 +80,10 @@ ul {
     scroll-snap-align: center;
 }
 
+.disable-snap {
+    scroll-snap-type: none;
+}
+
 /* Option 1) The slider's contents are UNGROUPED <li> elements: */
 
 li.content {
@@ -89,7 +93,6 @@ li.content {
 
     /* Demo styling only: */
     align-items: center;
-    background: palevioletred;
     color: white;
     display: flex;
     font-size: 4em;
@@ -116,7 +119,6 @@ ul.content li {
 
     /* Demo styling only: */
     align-items: center;
-    background: palevioletred;
     color: white;
     display: flex;
     font-size: 4em;

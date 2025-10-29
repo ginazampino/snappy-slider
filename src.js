@@ -1,87 +1,179 @@
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.snappy-slider').forEach((slider) => {
 
-    /* Step 1: Insert spacers between every <li> pair */
+    /* 
+    
+        HTML structure for reference:
+        =============================
 
-    const track = slider.querySelector('.track');
-    const originalList = Array.from(track.children);
+        === 1) FOR CONTENT/SPACERS:
 
-    for (let i = originalList.length - 1; i > 0; i--) {
-      const spacer = document.createElement('li');
+        <section class="snappy-slider">
+            <div class="viewport">
+                <ul class="track">
+                    <li class="content">
+                    <li class="spacer">
 
-      spacer.className = 'spacer';
-      spacer.setAttribute('aria-hidden', 'true');
-      spacer.setAttribute('role', 'presentation');
 
-      track.insertBefore(spacer, originalList[i]);
-    };
+        === 2) FOR GROUPS:
 
-    /* Step 2: Apply snapping to the HTML-defined target */
+        <section class="snappy-slider">
+            <div class="viewport">
+                <ul class="track">
+                    <li class="group">
+                        <ul class="content">
+                    <li class="spacer">
 
-    const snapTarget = slider.getAttribute('data-snapTarget');
-    const newList = Array.from(track.children);
+    */
 
-    const snapElements = newList.filter((element) => {
-      return element.classList.contains(snapTarget)
-    });
+    document.querySelectorAll('.snappy-slider').forEach((slider) => {
 
-    snapElements.forEach((element) => {
-      element.classList.add('snap-target');
-    });
+        /* ======== 
 
-    /* Step 3: Add basic click-only navigation functionality to the buttons */
+            STEP 1: Insert spacers 
 
-    const viewport = slider.querySelector('.viewport');
-    const scrollSpeed = parseInt(slider.getAttribute('data-scrollSpeed')) || 300;
-    const prev = slider.querySelector('.prev');
-    const next = slider.querySelector('.next');
+                    Add spacers between every <li> element in a slider. Note that 
+                    spacers are NOT automatically assigned snapping behavior, and 
+                    they don't interfere with the layout of the slider. They're safe 
+                    to leave in place, as-is, when not in use.
 
-    prev.addEventListener('click', () => {
-      viewport.scrollBy({
-        left: -scrollSpeed,
-        behavior: 'smooth'
-      })
-    });
+        ======== */
 
-    next.addEventListener('click', () => {
-      viewport.scrollBy({
-        left: scrollSpeed,
-        behavior: 'smooth'
-      });
-    });
+        const track = slider.querySelector('.track');
+        const originalList = Array.from(track.children);
 
-    /* Step 4: Add click-and-hold navigation functionality to the buttons */
+        for (let i = originalList.length - 1; i > 0; i--) {
+            const spacer = document.createElement('li');
 
-    const scrollInterval = parseInt(slider.getAttribute('data-scrollInterval')) || 400;
-    let scrollTimer = null;
+            spacer.className = 'spacer';
 
-    function startScroll(direction) {
-      if (scrollTimer) return;
+            /* NOTE: Prevent potential a11y/SEO issues: */
+            spacer.setAttribute('aria-hidden', 'true');
+            spacer.setAttribute('role', 'presentation');
 
-      scrollTimer = setInterval(() => {
-        viewport.scrollBy({
-          left: direction * scrollSpeed,
-          behavior: 'smooth'
+            track.insertBefore(spacer, originalList[i]);
+        };
+
+        /* ======== 
+
+            STEP 2: Add snapping
+
+                    Snapping behavior is assigned to elements whose class names
+                    match the value of the "data-snapTarget" HTML attribute.
+
+                    Options:
+
+                    1) "content" - When the "content" class is defined as the snap target,
+                                   each <li> element in the slider <ul> track will be given
+                                   snapping behavior. By default, this means that the slider
+                                   will snap to the center of each <li> on scroll.
+
+                                   NOTE: Every slider has "content" <li> elements.
+
+                    2) "spacer"  - When the "spacer" class is defined as the snap target,
+                                   each spacer <li> element (added in step 1) will be assigned
+                                   snapping behavior. This means that the slider will snap
+                                   between a pair of "content" <li> elements.
+
+                                   NOTE: Every slider has "spacer" <li> elements.
+
+                    3) "group"   - When the "group" class is defined as the snap target,
+                                   each "group" <li> element will be assigned snapping behavior.
+                                   Each group will contain a <ul> of its own, so the slider
+                                   will appear to snap between a collection of <li> elements,
+                                   as if it were turning a page.
+
+                                   NOTE: Know that "group" elements are not expected to be 
+                                         in every slider. If you want to snap by group, you 
+                                         must add them yourself with.
+
+        ======== */
+
+        const snapTarget = slider.getAttribute('data-snapTarget');
+        
+        track.querySelectorAll('.' + snapTarget).forEach((element) => element.classList.add('snap-target'));
+
+        /* ======== 
+
+            STEP 3: Set up controls 
+
+        ======== */
+
+        const viewport = slider.querySelector('.viewport');
+        const scrollSpeed = parseInt(slider.getAttribute('data-scrollSpeed')) || 300;
+        const prev = slider.querySelector('.prev');
+        const next = slider.querySelector('.next');
+
+        /* 3a. Click events: */
+
+        prev.addEventListener('click', () => {
+            viewport.scrollBy({
+                left: -scrollSpeed,
+                behavior: 'smooth'
+            });
         });
-      }, scrollInterval);
-    };
 
-    function stopScroll() {
-      clearInterval(scrollTimer);
-      scrollTimer = null;
-    };
+        next.addEventListener('click', () => {
+            viewport.scrollBy({
+                left: scrollSpeed,
+                behavior: 'smooth'
+            });
+        });
 
-    next.addEventListener('mousedown', () => startScroll(1));
-    next.addEventListener('mouseup', stopScroll);
-    next.addEventListener('mouseleave', stopScroll);
-    next.addEventListener('touchstart', () => startScroll(1), { passive: true });
-    next.addEventListener('touchend', stopScroll);
+        /* 3b. Hold events: */
 
-    prev.addEventListener('mousedown', () => startScroll(-1));
-    prev.addEventListener('mouseup', stopScroll);
-    prev.addEventListener('mouseleave', stopScroll);
-    prev.addEventListener('touchstart', () => startScroll(-1), { passive: true });
-    prev.addEventListener('touchend', stopScroll);
+        let scrollTimer = null;
 
-  });
+        function startHold(direction) {
+            /* NOTE: Disable snapping while holding: */
+            viewport.classList.add('disable-snap');
+
+            /* NOTE: Scroll by small, incremental steps: */
+            scrollTimer = setInterval(() => {
+                viewport.scrollLeft += direction * 16;
+            }, 16); /* NOTE: Smaller number, faster movement. */
+        };
+
+        function stopHold() {
+            clearInterval(scrollTimer);
+            scrollTimer = null;
+
+            /* NOTE: Re-enable snapping: */
+            viewport.classList.remove('disable-snap');
+        };
+
+        /* 3c. Event guards: */
+
+        function addGuards(button, direction) {
+            let holdTimeout;
+            let holding = false;
+
+            button.addEventListener('mousedown', () => {
+                holding = false;
+                holdTimeout = setTimeout(() => {
+                    holding = true;
+                    startHold(direction);
+                }, 150); /* NOTE: Hold delay in milliseconds */
+            });
+
+            button.addEventListener('mouseup', () => {
+                clearTimeout(holdTimeout);
+
+                if (holding) {
+                    stopHold();
+                } else {
+                    viewport.scrollBy({
+                        left: direction * scrollSpeed,
+                        behavior: 'smooth'
+                    });
+                };
+            });
+            
+            button.addEventListener('mouseleave', stopHold);
+        };
+
+        /* 3d. Final step */
+
+        addGuards(prev, -1);
+        addGuards(next, 1);
+    });
 });
