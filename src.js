@@ -1,7 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.snappy-slider').forEach((slider) => {
 
-    /* Step 1: Insert spacers between every <li> pair */
+    /* ======================
+    
+        Step 1) Insert spacers between every <li> pair.
+
+    ====================== */
 
     const track = slider.querySelector('.track');
     const slides = Array.from(track.children);
@@ -16,7 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
       track.insertBefore(spacer, slides[i]);
     };
 
-    /* Step 2: Apply snapping to the HTML-defined target */
+    /* ======================
+    
+        Step 2) Apply snapping to the HTML-defined target.
+
+    ====================== */
+
 
     const snapTarget = slider.getAttribute('data-snapTarget');
     const slidesWithSpacers = Array.from(track.children);
@@ -29,45 +38,106 @@ document.addEventListener('DOMContentLoaded', () => {
       element.classList.add('snap-target');
     });
 
-    /* Step 3: Add basic click-only navigation functionality to the buttons */
+    /* ======================
+    
+        Step 3) Implement viewport scroll logic.
+
+    ====================== */
 
     const viewport = slider.querySelector('.viewport');
-    const scrollSpeed = parseInt(slider.getAttribute('data-scrollSpeed')) || 300;
+    const allSnapTargets = Array.from(track.querySelectorAll('.snap-target'));
+
+    // Identify which snap target is currently in view:
+    function getCurrentSnapTarget() {
+      const viewportRect = viewport.getBoundingClientRect();
+      const viewportCenter = viewportRect.left + viewportRect.width / 2;
+
+      // Identify which snap target is closest to the center of the view:
+      let closest = null;
+      let closestDistance = Infinity;
+
+      allSnapTargets.forEach((target) => {
+        const targetRect = target.getBoundingClientRect();
+        const targetCenter = targetRect.left + targetRect.width / 2;
+        const distance = Math.abs(viewportCenter - targetCenter);
+
+        // Only consider targets that are visible within the view:
+        if (targetRect.right >= viewportRect.left && targetRect.left <= viewportRect.right) {
+          if (distance < closestDistance) {
+            closest = target;
+            closestDistance = distance;
+          };
+        };
+      });
+
+      return closest || allSnapTargets[0];
+    };
+
+    function scrollToSnapTarget(direction) {
+      const current = getCurrentSnapTarget();
+
+      if (!current) {
+        return;
+      };
+
+      const currentIndex = allSnapTargets.indexOf(current);
+      const nextIndex = currentIndex + direction;
+
+      if (nextIndex >= 0 && nextIndex < allSnapTargets.length) {
+        const target = allSnapTargets[nextIndex];
+
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'center',
+        });
+      };
+    };
+
+    /* ======================
+    
+        Step 4) Add event listeners to the navigation buttons.
+
+    ====================== */
+
     const prev = slider.querySelector('.prev');
     const next = slider.querySelector('.next');
 
-    prev.addEventListener('click', () => {
-      viewport.scrollBy({
-        left: -scrollSpeed,
-        behavior: 'smooth'
-      })
-    });
+    prev.addEventListener('click', () => scrollToSnapTarget(-1));
+    next.addEventListener('click', () => scrollToSnapTarget(1));
 
-    next.addEventListener('click', () => {
-      viewport.scrollBy({
-        left: scrollSpeed,
-        behavior: 'smooth'
-      });
-    });
+    /* ======================
+    
+        Step 4) Implement click-and-hold navigation functionality.
 
-    /* Step 4: Add click-and-hold navigation functionality to the buttons */
-    const scrollInterval = parseInt(slider.getAttribute('data-scrollInterval')) || 400;
+    ====================== */
+
+    const scrollDelay = 300;
+    const scrollInterval = 300;
+
     let scrollTimer = null;
 
     function startScroll(direction) {
-      if (scrollTimer) return;
+      if (scrollTimer) {
+        return;
+      };
 
-      scrollTimer = setInterval(() => {
-        viewport.scrollBy({
-          left: direction * scrollSpeed,
-          behavior: 'smooth'
-        });
-      }, scrollInterval);
+      const initialTimeout = setTimeout(() => {
+        scrollToSnapTarget(direction);
+
+        scrollTimer = setInterval(() => {
+          scrollToSnapTarget(direction);
+        }, scrollInterval);
+      }, scrollDelay);
+      
+      scrollTimer = initialTimeout;
     };
 
     function stopScroll() {
-      clearInterval(scrollTimer);
-      scrollTimer = null;
+      if (scrollTimer) {
+        clearTimeout(scrollTimer);
+        scrollTimer = null;
+      }
     };
 
     next.addEventListener('mousedown', () => startScroll(1));
