@@ -3,74 +3,84 @@
 
 <head>
     <title>snappy-slider</title>
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./demo.css" />
+    <link rel="stylesheet" href="./snappy-slider.css" />
 </head>
 
 <body>
     <div class="wrapper">
         <h1>Snappy Slider</h1>
-        <h2>Snap to content</h2>
-        <section class="snappy-slider" data-snapTarget="content" data-scrollInterval="100" data-scrollSpeed="100">
+
+        <!-- Example 3: Snap to slide -->
+
+        <h2>Snap to slide</h2>
+        <section class="snappy-slider" data-snapTarget="slide" data-scrollInterval="500">
             <button class="prev">🡠</button>
             <div class="viewport">
                 <ul class="track">
-                    <li class="content" style="background-color: rgb(216, 180, 36)">1</li>
-                    <li class="content" style="background-color: rgb(216, 180, 36)">2</li>
-                    <li class="content" style="background-color: rgb(216, 180, 36)">3</li>
-                    <li class="content" style="background-color: rgb(216, 180, 36)">4</li>
-                    <li class="content" style="background-color: rgb(216, 180, 36)">5</li>
-                    <li class="content" style="background-color: rgb(216, 180, 36)">6</li>
-                    <li class="content" style="background-color: rgb(216, 180, 36)">7</li>
-                    <li class="content" style="background-color: rgb(216, 180, 36)">8</li>
-                    <li class="content" style="background-color: rgb(216, 180, 36)">9</li>
-                    <li class="content" style="background-color: rgb(216, 180, 36)">10</li>
+                    <li class="slide">1</li>
+                    <li class="slide">2</li>
+                    <li class="slide">3</li>
+                    <li class="slide">4</li>
+                    <li class="slide">5</li>
+                    <li class="slide">6</li>
+                    <li class="slide">7</li>
+                    <li class="slide">8</li>
+                    <li class="slide">9</li>
+                    <li class="slide">10</li>
                 </ul>
             </div>
             <button class="next">🡢</button>
         </section>
+
+        <!-- Example 2: Snap to Spacer -->
+
         <h2>Snap to spacer</h2>
         <section class="snappy-slider" data-snapTarget="spacer" data-scrollInterval="500">
             <button class="prev">🡠</button>
             <div class="viewport">
                 <ul class="track">
-                    <li class="content" style="background-color: rgb(65, 154, 117)">1</li>
-                    <li class="content" style="background-color: rgb(65, 154, 117)">2</li>
-                    <li class="content" style="background-color: rgb(65, 154, 117)">3</li>
-                    <li class="content" style="background-color: rgb(65, 154, 117)">4</li>
-                    <li class="content" style="background-color: rgb(65, 154, 117)">5</li>
-                    <li class="content" style="background-color: rgb(65, 154, 117)">6</li>
-                    <li class="content" style="background-color: rgb(65, 154, 117)">7</li>
-                    <li class="content" style="background-color: rgb(65, 154, 117)">8</li>
-                    <li class="content" style="background-color: rgb(65, 154, 117)">9</li>
-                    <li class="content" style="background-color: rgb(65, 154, 117)">10</li>
+                    <li class="slide">1</li>
+                    <li class="slide">2</li>
+                    <li class="slide">3</li>
+                    <li class="slide">4</li>
+                    <li class="slide">5</li>
+                    <li class="slide">6</li>
+                    <li class="slide">7</li>
+                    <li class="slide">8</li>
+                    <li class="slide">9</li>
+                    <li class="slide">10</li>
                 </ul>
             </div>
             <button class="next">🡢</button>
         </section>
+
+        <!-- Example 3: Snap to Group -->
+
         <h2>Snap to group</h2>
         <section class="snappy-slider" data-snapTarget="group" data-scrollSpeed="900" data-scrollInterval="900">
             <button class="prev">🡠</button>
             <div class="viewport">
                 <ul class="track">
                     <li class="group">
-                        <ul class="content">
-                            <li style="background-color: rgb(90, 119, 164)">1</li>
-                            <li style="background-color: rgb(90, 119, 164)">2</li>
-                            <li style="background-color: rgb(90, 119, 164)">3</li>
+                        <ul class="slide">
+                            <li>1</li>
+                            <li>2</li>
+                            <li>3</li>
                         </ul>
                     </li>
                     <li class="group">
-                        <ul class="content">
-                            <li style="background-color: rgb(152, 110, 165)">1</li>
-                            <li style="background-color: rgb(152, 110, 165)">2</li>
-                            <li style="background-color: rgb(152, 110, 165)">3</li>
+                        <ul class="slide">
+                            <li>1</li>
+                            <li>2</li>
+                            <li>3</li>
                         </ul>
                     </li>
                     <li class="group">
-                        <ul class="content">
-                            <li style="background-color: rgb(182, 103, 77)">1</li>
-                            <li style="background-color: rgb(182, 103, 77)">2</li>
-                            <li style="background-color: rgb(182, 103, 77)">3</li>
+                        <ul class="slide"><wbr>wwwwwww</wbr>
+                            <li>1</li>
+                            <li>2</li>
+                            <li>3</li>
                         </ul>
                     </li>
                 </ul>
